@@ -1,13 +1,15 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-
-</body>
-</html>
+{% load static %}
+<header>
+	<!-- Использованы классы бустрапа для создания типовой навигации с логотипом -->
+	<!-- В дальнейшем тут будет создано полноценное меню -->
+	<nav class="navbar navbar-light" style="background-color: lightskyblue">
+		<div class="container">
+			<a class="navbar-brand" href="{% url 'posts:home' %}">
+				<img src="{% static 'img/logo.png' %}" width="30" height="30"
+				     class="d-inline-block align-top" alt="">
+				<!-- тег span используется для добавления нужных стилей отдельным участкам текста -->
+				<span style="color:red">Ya</span>tube
+			</a>
+		</div>
+	</nav>
+</header>
