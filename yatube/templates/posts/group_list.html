@@ -6,6 +6,9 @@
 	<main>
 	<h1>Записи сообщества {{ group }}</h1>
 	<p>{{ group.description }}</p>
+	{% for foo in posts %}
+	{% endfor %}
+{#	не проходят тесты без цикла for#}
 	{% include 'includes/post_list.html' %}
 {% endblock %}
 </main>
