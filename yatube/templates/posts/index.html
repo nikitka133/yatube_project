@@ -4,8 +4,8 @@
 	Последние обновления на сайте
 {% endblock %}
 {% block content %}
-	<main>
 	<h1>Последние обновления на сайте</h1>
-{% include 'includes/post_list.html' %}
+{% for post in posts %}
+	{% include 'includes/post_list.html' %}
+{% endfor %}
 {% endblock %}
-</main>

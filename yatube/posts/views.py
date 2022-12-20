@@ -13,7 +13,7 @@ def group_posts(request, slug):
     group = get_object_or_404(Group, slug=slug)
     context = {
         'group': group,
-        'posts': Post.objects.filter(group=group)[:LAST_POSTS]
+        'posts': group.post.all()[:LAST_POSTS]
     }
 
     return render(request, 'posts/group_list.html', context)

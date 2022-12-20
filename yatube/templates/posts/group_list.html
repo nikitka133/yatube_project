@@ -1,14 +1,12 @@
 {% extends 'base.html' %}
 {% block title %}
-	Записи сообщества {{ group }}
+	Записи сообщества {{ group.title }}
 {% endblock %}
+
 {% block content %}
-	<main>
-	<h1>Записи сообщества {{ group }}</h1>
+	<h1>Записи сообщества {{ group.title }}</h1>
 	<p>{{ group.description }}</p>
-	{% for foo in posts %}
+	{% for post in posts %}
+		{% include 'includes/post_list.html' %}
 	{% endfor %}
-{#	не проходят тесты без цикла for#}
-	{% include 'includes/post_list.html' %}
 {% endblock %}
-</main>
