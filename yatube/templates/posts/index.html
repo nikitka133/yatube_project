@@ -5,7 +5,8 @@
 {% endblock %}
 {% block content %}
 	<h1>Последние обновления на сайте</h1>
-{% for post in posts %}
+{% for post in page_obj %}
 	{% include 'includes/post_list.html' %}
 {% endfor %}
+  {% include 'posts/includes/paginator.html' %}
 {% endblock %}
