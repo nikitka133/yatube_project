@@ -13,7 +13,8 @@ class SignUp(CreateView):
     template_name = "users/signup.html"
 
 
-class ChangePasswordView(SuccessMessageMixin, LoginRequiredMixin, PasswordChangeView):
+class ChangePasswordView(SuccessMessageMixin, LoginRequiredMixin,
+                         PasswordChangeView):
     template_name = "users/change_password.html"
     success_message = "Пароль изменён"
     success_url = reverse_lazy("home")

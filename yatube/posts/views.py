@@ -49,24 +49,6 @@ def post_detail(request, post_id):
     return render(request, "posts/post_detail.html", context)
 
 
-# def post_create(request):
-#     if request.method == "POST":
-#         print(request.POST)
-#         form = PostForm(request.POST)
-#
-#         if form.is_valid():
-#             form.cleaned_data['author'] = '1'
-#             print(form.cleaned_data)
-#             form.save()
-#             return redirect(f"/profile/{request.user.username}/")
-#         else:
-#             context = {"form": form}
-#             return render(request, "posts/create.html", context)
-#     else:
-#         form = PostForm()
-#         context = {"form": form}
-#         return render(request, "posts/create.html", context)
-
 def post_create(request):
     if request.method == "POST":
         author = Post(author=request.user)
