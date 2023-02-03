@@ -14,7 +14,7 @@ class CreationForm(UserCreationForm):
 class ChangePasswordForm(PasswordChangeForm):
     new_password1 = forms.CharField(
         label="Новый пароль",
-        widget=forms.TextInput(attrs={"type": "password"})
+        widget=forms.TextInput(attrs={"type": "password"}),
     )
     new_password2 = forms.CharField(
         label="Повтрите новый пароль",

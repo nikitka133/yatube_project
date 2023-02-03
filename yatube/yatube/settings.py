@@ -26,7 +26,12 @@ SECRET_KEY = "mv@z^dcqg)d1ys=c=3^q7v&9b%d(ubeau#72)qoeal8akqi&!w"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    "[::1]",
+    "testserver",
+]
 
 
 # Application definition
@@ -42,6 +47,7 @@ INSTALLED_APPS = [
     "users.apps.UsersConfig",
     "core.apps.CoreConfig",
     "about.apps.AboutConfig",
+    "sorl.thumbnail",
 ]
 
 MIDDLEWARE = [
@@ -127,10 +133,17 @@ USE_TZ = True
 STATIC_URL = "/static/"
 STATICFILES_DIRS = (os.path.join(BASE_DIR, "static/"),)
 
-# MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-# MEDIA_URL = "/media/"
+MEDIA_URL = "/media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 LOGIN_URL = "users:login"
 LOGIN_REDIRECT_URL = "posts:home"
 
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, "sent_emails")
+
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
+    }
+}

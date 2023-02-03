@@ -1,14 +1,20 @@
 from django import forms
 
-from .models import Group, Post
+from .models import Comment, Post
 
 
 class PostForm(forms.ModelForm):
-    text = forms.Textarea()
-    group = forms.ModelChoiceField(
-        queryset=Group.objects.all(), required=False
-    )
-
     class Meta:
         model = Post
-        fields = ("text", "group")
+        fields = ("text", "group", "image")
+        labels = {"text": "Текст поста", "group": "Группа"}
+        help_texts = {
+            "text": "Текст нового поста",
+            "group": "Группа, к которой будет относиться пост",
+        }
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ("text",)

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load thumbnail %}
 {% block content %}
 <div class="row">
   <aside class="col-12 col-md-3">
@@ -19,7 +19,7 @@
         Автор: {{ page_obj.author.get_full_name }}
       </li>
       <li class="list-group-item d-flex justify-content-between align-items-center">
-        Всего постов автора: <span>{{ count_posts }}</span>
+        Всего постов автора: <span>{{ page_obj.author.posts.count }}</span>
       </li>
       <li class="list-group-item">
         <a href="{% url 'posts:profile' page_obj.author.username %}">
@@ -29,12 +29,48 @@
     </ul>
   </aside>
   <article class="col-12 col-md-9">
+  {% thumbnail page_obj.image "960x339" crop="center" upscale=True as im %}
+    <img class="card-img my-2" src="{{ im.url }}">
+  {% endthumbnail %}
     <p>
       {{ page_obj.text }}
     </p>
-    {% if  user.id == page_obj.author.pk %}
+
+  <!-- Форма добавления комментария -->
+{% load user_filters %}
+
+{% if user.is_authenticated %}
+  <div class="card my-4">
+    <h5 class="card-header">Добавить комментарий:</h5>
+    <div class="card-body">
+      <form method="post" action="{% url 'posts:add_comment' page_obj.id %}">
+        {% csrf_token %}
+        <div class="form-group mb-2">
+          {{ form.text|addclass:"form-control" }}
+        </div>
+        <button type="submit" class="btn btn-primary">Отправить</button>
+      </form>
+    </div>
+  </div>
+{% endif %}
+
+{% for comment in comments %}
+  <div class="media mb-4">
+    <div class="media-body">
+      <h5 class="mt-0">
+        <a href="{% url 'posts:profile' comment.author.username %}">
+          {{ comment.author.username }}
+        </a>
+      </h5>
+      <p>
+        {{ comment.text }}
+      </p>
+    </div>
+  </div>
+{% endfor %}
+    {% if  user.id and user.id == page_obj.author.pk %}
     <a class="btn btn-primary" href="{% url 'posts:post_edit' page_obj.pk %}">
-              редактировать запись
+  Редактировать запись
       {% endif %}
     </a>
   </article>

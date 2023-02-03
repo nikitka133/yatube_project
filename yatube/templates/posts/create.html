@@ -12,29 +12,24 @@
             {% endif %}
           </div>
           <div class="card-body">
-            <form method="post" action="">
+            <form method="post" action="" enctype="multipart/form-data">
               {% csrf_token %}
-              <input type="hidden" name="author" value="{{ user.id }}">
-              <div class="form-group row my-3 p-3">
-                <label for="text">
-                  Текст поста
-                  <span class="required text-danger">*</span>
+              {% load user_filters %}
+              {% for field in form %}
+                <label for="{{ field.id_for_label }}">
+                  {{ field.label }}
+                  {% if field.field.required %}
+                    <span class="required text-danger">*</span>
+                  {% endif %}
                 </label>
-                {{ form.text }}
+                {{ field|addclass:'form-control' }}
                 <ul>
-                  <small id="id_text-help" class="form-text text-muted">
-                    Текст нового поста
+                  <small id="{{ field.id_for_label }}-help"
+                         class="form-text text-muted">
+                    {{ field.help_text }}
                   </small>
-              </div>
-              <div class="form-group row my-3 p-3">
-                <label for="id_group">
-                  Группа
-                </label>
-                {{ form.group }}
-                <small id="id_group-help" class="form-text text-muted">
-                  Группа, к которой будет относиться пост
-                </small>
-              </div>
+                </ul>
+              {% endfor %}
               <div class="d-flex justify-content-end">
                 <button type="submit" class="btn btn-primary">
                   {% if is_edit %}

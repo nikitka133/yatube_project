@@ -16,7 +16,8 @@ urlpatterns = [
     path(
         "login/",
         LoginView.as_view(template_name="users/login.html"),
-        name="login"),
+        name="login",
+    ),
     path(
         "reset/",
         PasswordResetView.as_view(template_name="users/password_reset.html"),
