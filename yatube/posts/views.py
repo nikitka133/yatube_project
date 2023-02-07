@@ -1,5 +1,3 @@
-from itertools import chain
-
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import get_object_or_404, redirect, render
@@ -15,11 +13,9 @@ def get_page_obj(request, post_list):
 
 @cache_page(20, key_prefix="index_page")
 def index(request):
-    post_list = Post.objects.all()
+    post_list = Post.objects.all().select_related("group")
     page_obj = get_page_obj(request, post_list)
-    context = {
-        "page_obj": page_obj,
-    }
+    context = {"page_obj": page_obj, "index": True}
     return render(request, "posts/index.html", context)
 
 
@@ -46,7 +42,7 @@ def profile(request, username):
     }
 
     if request.user.is_authenticated:
-        following = bool(request.user.follower.filter(author=user))
+        following = request.user.follower.exists()
         context.update(following=following)
 
     return render(request, "posts/profile.html", context)
@@ -113,18 +109,17 @@ def add_comment(request, post_id):
 
 @login_required
 def follow_index(request):
-    follows = Follow.objects.filter(user=request.user)
-    posts = [Post.objects.filter(author=follow.author) for follow in follows]
-    posts = list(chain.from_iterable(posts))
+    posts = Post.objects.filter(author__following__user=request.user)
     page_obj = get_page_obj(request, posts)
-    context = {"page_obj": page_obj}
+    context = {"page_obj": page_obj, "follow": True}
     return render(request, "posts/follow.html", context)
 
 
 @login_required
 def profile_follow(request, username):
     user = get_object_or_404(User, username=username)
-    Follow.objects.get_or_create(user=request.user, author=user)
+    if request.user.username != username:
+        Follow.objects.get_or_create(user=request.user, author=user)
     return redirect("posts:profile", username)
 
 

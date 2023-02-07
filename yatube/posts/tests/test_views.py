@@ -9,7 +9,7 @@ from django.urls import reverse
 from yatube import settings
 
 from ..forms import PostForm
-from ..models import Group, Post
+from ..models import Follow, Group, Post
 
 User = get_user_model()
 
@@ -166,8 +166,7 @@ class PagesTests(TestCase):
         response = self.client.get(reverse("posts:home"))
         content = response.content.decode()
 
-        for post_id in range(13):
-            Post.objects.first().delete()
+        Post.objects.all().delete()
 
         response_after = self.client.get(reverse("posts:home"))
         content_after = response_after.content.decode()
@@ -192,7 +191,7 @@ class TestFollowing(TestCase):
         self.auth_user_3.force_login(self.user_3)
 
     def test_subscribe(self):
-        """Подписка и отписка на автора"""
+        """Подписка на автора"""
         self.auth_user.get(
             reverse(
                 "posts:profile_follow",
@@ -202,6 +201,9 @@ class TestFollowing(TestCase):
         subscription = self.user.follower.filter(author=self.user_2)
         self.assertTrue(subscription, "Пользователь не подписался на автора")
 
+    def test_unsubscribe(self):
+        """Отписка от автора"""
+        Follow.objects.create(user=self.user, author=self.user_2)
         self.auth_user.get(
             reverse(
                 "posts:profile_unfollow",
